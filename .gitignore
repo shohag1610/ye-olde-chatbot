@@ -1,0 +1,28 @@
+# Virtualenv
+.venv/
+venv/
+env/
+
+# Python cache & artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Editor/IDE
+.vscode/
+.idea/
+
+
+# Environment files
+.env
+.env.* 
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
