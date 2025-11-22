@@ -1,13 +1,9 @@
-# main.py
-
-def add_numbers(a: int, b: int) -> int:
-    return a + b
-
+from chatbot import Chatbot
 
 def main():
-    print("Ye Olde Chatbot Project Setup Complete!")
-    result = add_numbers(2, 3)
-
+    print("Initialising Ye Olde Chatbot...")
+    bot = Chatbot()
+    print("Model loaded:", bot.model_name)
 
 if __name__ == "__main__":
     main()
