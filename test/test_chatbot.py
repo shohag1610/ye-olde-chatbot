@@ -16,3 +16,14 @@ def test_encode_prompt_returns_tensors():
 
     assert encoded["input_ids"].shape[0] == 1
     assert encoded["attention_mask"].shape[0] == 1
+
+def test_decode_reply():
+    bot = Chatbot()
+
+    encoded = bot.encode_prompt("Hello!")
+    input_ids = encoded["input_ids"][0].tolist()
+
+    decoded = bot.decode_reply(input_ids)
+
+    assert isinstance(decoded, str)
+    assert "hello" in decoded.lower()
