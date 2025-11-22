@@ -2,11 +2,11 @@ from chatbot import Chatbot
 
 def main():
     bot = Chatbot()
-    encoded = bot.encode_prompt("Hello, how are you?")
-    ids = encoded["input_ids"][0].tolist()
+    prompt = "What is the weather like today?"
+    reply = bot.generate_reply(prompt)
 
-    print("Token IDs:", ids)
-    print("Decoded:", bot.decode_reply(ids))
+    print(f"Prompt: {prompt}")
+    print(f"Reply: {reply}")
 
 if __name__ == "__main__":
     main()
