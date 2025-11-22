@@ -1,9 +1,9 @@
 from chatbot import Chatbot
 
 def main():
-    print("Initialising Ye Olde Chatbot...")
     bot = Chatbot()
-    print("Model loaded:", bot.model_name)
+    encoded = bot.encode_prompt("Hello, how are you?")
+    print(encoded)
 
 if __name__ == "__main__":
     main()

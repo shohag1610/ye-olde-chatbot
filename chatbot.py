@@ -8,3 +8,6 @@ class Chatbot:
         # Load tokenizer and model
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(model_name)
+        
+    def encode_prompt(self, prompt: str):
+        return self.tokenizer(prompt, return_tensors="pt")
