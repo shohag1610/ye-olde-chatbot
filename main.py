@@ -3,16 +3,21 @@ from chatbot import Chatbot
 def main():
     bot = Chatbot()
     
-    prompts = [
-        "What's your name?",
-        "What do you think about AI?",
-        "Sorry, tell me your name again."
-    ]
+    bot = Chatbot()
 
-    for prompt in prompts:
-        reply = bot.generate_reply(prompt)
-        print(f"Prompt: {prompt}")
-        print(f"Reply: {reply}\n")
+    print("===============================================")
+    print("      Welcome to Your Terminal Chatbot!        ")
+    print("===============================================")
+
+    while True:
+        user_input = input("User: ")
+
+        if user_input.lower() in ["exit", "quit"]:
+            print("Goodbye!")
+            break
+
+        bot_reply = bot.generate_reply(user_input)
+        print(f"Bot: {bot_reply}\n")
 
 if __name__ == "__main__":
     main()

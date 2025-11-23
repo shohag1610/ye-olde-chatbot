@@ -52,4 +52,18 @@ def test_reset_history():
     bot.reset_history()
     assert bot.chat_history_ids is None
     
+def test_basic_response():
+    bot = Chatbot()
+    reply = bot.generate_reply("Hello!")
+    assert isinstance(reply, str)
+    assert len(reply) > 0
+
+def test_multiple_turns():
+    bot = Chatbot()
+    r1 = bot.generate_reply("Hi there")
+    r2 = bot.generate_reply("What is your purpose?")
+    assert isinstance(r1, str)
+    assert isinstance(r2, str)
+    assert r1 != r2
+    
     
