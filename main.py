@@ -2,8 +2,6 @@ from chatbot import Chatbot
 
 def main():
     bot = Chatbot()
-    
-    bot = Chatbot()
 
     print("===============================================")
     print("      Welcome to Your Terminal Chatbot!        ")

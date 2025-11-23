@@ -5,10 +5,13 @@ import torch
 class Chatbot:
     def __init__(self, model_name: str = "microsoft/DialoGPT-small"):
         self.model_name = model_name
+        
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print(f"Chatbot running on: {self.device}")
 
         # Load tokenizer and model
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-        self.model = AutoModelForCausalLM.from_pretrained(self.model_name)
+        self.model = AutoModelForCausalLM.from_pretrained(self.model_name).to(self.device)
         
         #to store conversation history
         self.chat_history_ids = None
@@ -18,7 +21,8 @@ class Chatbot:
         
     def encode_prompt(self, prompt: str):
         prompt = prompt + "\n"
-        return self.tokenizer(prompt, return_tensors="pt")
+        encoded = self.tokenizer(prompt, return_tensors="pt")
+        return {k: v.to(self.device) for k, v in encoded.items()}
     
     def decode_reply(self, reply_ids: list[int]) -> str:
         return self.tokenizer.decode(reply_ids, skip_special_tokens=True)
@@ -42,7 +46,7 @@ class Chatbot:
             attention_mask = encoded["attention_mask"]
         else:
             # Concatenate previous history with new prompt
-            input_ids = torch.cat([self.chat_history_ids, encoded["input_ids"]], dim=-1)
+            input_ids = torch.cat([self.chat_history_ids, encoded["input_ids"]], dim=-1).to(self.device)
 
             # Build attention mask to match the concatenated input_ids
             attention_mask = torch.cat(
@@ -51,7 +55,7 @@ class Chatbot:
                     encoded["attention_mask"]
                 ],
                 dim=-1
-            )
+            ).to(self.device)
 
         # Generate model output
         output_ids = self.model.generate(
@@ -72,6 +76,6 @@ class Chatbot:
         reply = self.decode_reply(new_tokens.tolist()).strip()
 
         # Update the chat history (the full conversation output_ids)
-        self.chat_history_ids = output_ids
+        self.chat_history_ids = output_ids.to(self.device)
 
         return reply
