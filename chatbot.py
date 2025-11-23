@@ -13,6 +13,9 @@ class Chatbot:
         #to store conversation history
         self.chat_history_ids = None
         
+        #default
+        self.system_prompt = "You are a helpful assistant. Respond to the end of this conversation accordingly.\n"
+        
     def encode_prompt(self, prompt: str):
         prompt = prompt + "\n"
         return self.tokenizer(prompt, return_tensors="pt")
@@ -25,8 +28,13 @@ class Chatbot:
     
     def generate_reply(self, prompt: str) -> str:
 
+        if self.chat_history_ids is None:
+            full_prompt = self.system_prompt + prompt
+        else:
+            full_prompt = prompt
+            
         # Encode the prompt
-        encoded = self.encode_prompt(prompt)
+        encoded = self.encode_prompt(full_prompt)
 
         # If no history → first message
         if self.chat_history_ids is None:
