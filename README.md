@@ -44,6 +44,7 @@ venv\Scripts\activate          # Windows
 ```bash
 pip install torch transformers rich pytest
 ```
+---
 
 ## ▶️ How to Run
 After installing dependencies, run the chatbot in the terminal:
@@ -51,7 +52,7 @@ After installing dependencies, run the chatbot in the terminal:
 ```bash
 python main.py
 ```
----
+
 ## ▶️ How to use
 The chatbot will start and display a system prompt. You can then type messages interactively:
 
@@ -67,6 +68,7 @@ Bot: Why did the computer go to the doctor? It caught a virus!
 
 Type your message after User:. Bot replies are printed as Bot:.
 Type quit or exit to stop the conversation.
+
 ---
 
 ## 🧠 How to Change Model
@@ -87,4 +89,3 @@ bot = Chatbot(model_name="microsoft/DialoGPT-medium")
 
 Note: Larger models may require GPU for faster inference.
 Adjust generation parameters like max_new_tokens, temperature, top_p, and top_k as needed.
----
