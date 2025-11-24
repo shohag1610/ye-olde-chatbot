@@ -16,8 +16,11 @@ class Chatbot:
         #to store conversation history
         self.chat_history_ids = None
         
+        #store prompt history as a text
+        self.text_history = "" 
+        
         #default
-        self.system_prompt = "You are a helpful assistant. Respond to the end of this conversation accordingly.\n"
+        self.system_prompt = "You are a helpful AI assistant.\n"
         
     def encode_prompt(self, prompt: str):
         prompt = prompt + "\n"
@@ -31,51 +34,37 @@ class Chatbot:
         self.chat_history_ids = None
     
     def generate_reply(self, prompt: str) -> str:
+        # Add the user message to text history
+        self.text_history += f"User: {prompt}\n"
 
+        # Full prompt = system prompt only if first message + current text history
         if self.chat_history_ids is None:
-            full_prompt = self.system_prompt + prompt
+            full_prompt = self.system_prompt + self.text_history
         else:
-            full_prompt = prompt
-            
-        # Encode the prompt
+            full_prompt = self.text_history
+
+        # Encode
         encoded = self.encode_prompt(full_prompt)
+        input_ids = encoded["input_ids"]
+        attention_mask = encoded["attention_mask"]
 
-        # If no history → first message
-        if self.chat_history_ids is None:
-            input_ids = encoded["input_ids"]
-            attention_mask = encoded["attention_mask"]
-        else:
-            # Concatenate previous history with new prompt
-            input_ids = torch.cat([self.chat_history_ids, encoded["input_ids"]], dim=-1).to(self.device)
 
-            # Build attention mask to match the concatenated input_ids
-            attention_mask = torch.cat(
-                [
-                    torch.ones_like(self.chat_history_ids),
-                    encoded["attention_mask"]
-                ],
-                dim=-1
-            ).to(self.device)
-
-        # Generate model output
+        # Generate
         output_ids = self.model.generate(
             input_ids,
             attention_mask=attention_mask,
-            max_length=input_ids.shape[1] + 100,
-            pad_token_id=self.tokenizer.eos_token_id,  
+            max_new_tokens=100,
+            pad_token_id=self.tokenizer.eos_token_id,
             do_sample=True,
             temperature=0.9,
             top_p=0.8,
             top_k=50
         )
 
-        # Extract ONLY newly generated tokens
+        # Extract only the newly generated tokens
         new_tokens = output_ids[0][input_ids.shape[1]:]
-
-        # Decode the reply text
         reply = self.decode_reply(new_tokens.tolist()).strip()
-
-        # Update the chat history (the full conversation output_ids)
-        self.chat_history_ids = output_ids.to(self.device)
+        reply = reply.split("User :")[-1].strip()
+        self.text_history += f"Bot: {reply}\n"
 
         return reply
