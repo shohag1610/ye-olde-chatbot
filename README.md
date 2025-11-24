@@ -56,18 +56,12 @@ python main.py
 ## ▶️ How to use
 The chatbot will start and display a system prompt. You can then type messages interactively:
 
-Welcome to Ye Olde Chatbot!
-System: You are a helpful assistant. Respond to the end of this conversation accordingly.
+User: Hello!  
+Bot: Greetings! How can I assist you today?  
 
-User: Hello!
-Bot: Greetings! How can I assist you today?
-
-User: Tell me a joke.
-Bot: Why did the computer go to the doctor? It caught a virus!
-
-
-Type your message after User:. Bot replies are printed as Bot:.
-Type quit or exit to stop the conversation.
+Type your message after **User:**  
+Bot replies are printed as **Bot:**  
+Type **quit** or **exit** to stop the conversation.
 
 ---
 

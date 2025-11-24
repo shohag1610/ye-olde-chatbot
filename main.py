@@ -1,7 +1,7 @@
 from chatbot import Chatbot
 
 def main():
-    bot = Chatbot("microsoft/DialoGPT-large")
+    bot = Chatbot()
 
     print("===============================================")
     print("      Welcome to Your Terminal Chatbot!        ")
